@@ -39,5 +39,4 @@ A browser-based drawing application inspired by the classic Etch-a-Sketch toy. T
    git clone https://github.com/your-username/etch-a-sketch.git
 
 ## Credits 
-
 This project was created as part of [The Odin Project curriculum](https://www.theodinproject.com). The Odin Project is an open-source platform that provides a free, full-stack web development curriculum. Special thanks to the Odin Project community for guidance and support.

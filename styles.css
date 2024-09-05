@@ -1,0 +1,27 @@
+* {
+  margin: 0px;
+  border: 0px;
+  padding: 0px;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: aliceblue;
+}
+
+#gridContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  background-color: white;
+  margin: 100px auto;
+  box-shadow: 10px  10px rgba(0, 170, 255, 0.034);
+}
+
+.grids {
+    border: 1px solid red;
+}
