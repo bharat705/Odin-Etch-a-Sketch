@@ -1,4 +1,32 @@
 let isGridOn = false;
+const gridBorderButton = document.querySelector(".gridBorderButton");
+
+gridBorderButton.addEventListener("mousedown", () => {
+  if (isGridOn === false) {
+    isGridOn = true;
+    toggleBorder();
+  } else if (isGridOn === true) {
+    isGridOn = false;
+    toggleBorder();
+  }
+});
+
+let gridColor = "#dcdcdc";
+const gridColorButton = document.querySelector(".gridColorButton");
+const gridColorInput = document.querySelector("#gridColorInput");
+
+gridColorButton.addEventListener("click", () => {
+  gridColorInput.click();
+});
+
+gridColorInput.addEventListener("change", (e) => {
+  gridColor = e.target.value;
+  toggleBorder();
+  gridColorButton.setAttribute(
+    "style",
+    "background-color: " + gridColor + "; color: white;"
+  );
+});
 
 const gridContainer = document.querySelector("#gridContainer");
 const inputGridNumber = document.querySelector("#inputGridNumber");
@@ -29,9 +57,10 @@ inputGridNumber.addEventListener("input", () => {
   resetGrids();
   const gridNumber = Number(inputGridNumber.value);
   createGrids(gridNumber);
+  toggleBorder();
 });
 
-function toggleBorder(color = "#dcdcdc") {
+function toggleBorder(color = gridColor) {
   if (isGridOn === true) {
     for (const child of gridContainer.children) {
       child.style.border = "1px solid " + color;
@@ -44,14 +73,3 @@ function toggleBorder(color = "#dcdcdc") {
 }
 
 createGrids(gridNumber);
-
-const gridBorder = document.querySelector(".gridBorder");
-gridBorder.addEventListener("mousedown", () => {
-  if (isGridOn === false) {
-    isGridOn = true;
-    toggleBorder();
-  } else if (isGridOn === true) {
-    isGridOn = false;
-    toggleBorder();
-  }
-});
