@@ -1,25 +1,42 @@
 let isGridOn = false;
 const gridBorderButton = document.querySelector(".gridBorderButton");
 
+function activateButton(anyButton) {
+  anyButton.setAttribute(
+    "style",
+    "background-color: #4caf50; color: white; border: 2px solid #4caf50;"
+  );
+}
+
+function deactivateButton(anyButton) {
+  anyButton.setAttribute(
+    "style",
+    "background-color: #f0f0f0; color: #333; border: 2px solid #ccc"
+  );
+}
+
+function getRandomColor() {
+  const letters = "0123456789ABCDEF";
+  let color = "#";
+  for (let i = 0; i < 6; i++) {
+    color += letters[Math.floor(Math.random() * 16)];
+  }
+  return color;
+}
+
 gridBorderButton.addEventListener("mousedown", () => {
   if (isGridOn === false) {
     isGridOn = true;
-    gridBorderButton.setAttribute(
-      "style",
-      "background-color: #4caf50; color: white; border: 2px solid #4caf50;"
-    );
+    activateButton(gridBorderButton);
     toggleBorder();
   } else if (isGridOn === true) {
     isGridOn = false;
-    gridBorderButton.setAttribute(
-      "style",
-      "background-color: #f0f0f0; color: #333; border: 2px solid #ccc"
-    );
+    deactivateButton(gridBorderButton);
     toggleBorder();
   }
 });
 
-let borderColor = "#dcdcdc";
+let borderColor = getRandomColor();
 const borderColorButton = document.querySelector(".borderColorButton");
 const borderColorInput = document.querySelector("#borderColorInput");
 
@@ -36,7 +53,7 @@ borderColorInput.addEventListener("change", (e) => {
   );
 });
 
-let penColor = "#006ACC";
+let penColor = getRandomColor();
 const penColorButton = document.querySelector(".penColorButton");
 const penColorInput = document.querySelector("#penColorInput");
 
@@ -59,17 +76,11 @@ penModeButton.addEventListener("mousedown", togglePenMode);
 function togglePenMode() {
   if (penMode === "mouseenter") {
     penMode = "click";
-    penModeButton.setAttribute(
-      "style",
-      "background-color: #4caf50; color: white; border: 2px solid #4caf50;"
-    );
+    activateButton(penModeButton);
     sketch();
   } else if (penMode === "click") {
     penMode = "mouseenter";
-    penModeButton.setAttribute(
-      "style",
-      "background-color: #f0f0f0; color: #333; border: 2px solid #ccc"
-    );
+    deactivateButton(penModeButton);
     sketch();
   }
 }
@@ -77,6 +88,24 @@ function togglePenMode() {
 const gridContainer = document.querySelector("#gridContainer");
 const inputGridNumber = document.querySelector("#inputGridNumber");
 const rangeSliderValue = document.querySelector(".rangeSliderValue");
+
+let isRandomColor = false;
+const randomColorButton = document.querySelector(".randomColorButton");
+randomColorButton.addEventListener("click", () => {
+  if (isRandomColor === false) {
+    isRandomColor = true;
+    penColorButton.disabled = true;
+    deactivateButton(penColorButton);
+    activateButton(randomColorButton);
+    penColor = getRandomColor();
+    sketch();
+  } else if (isRandomColor === true) {
+    isRandomColor = false;
+    penColorButton.disabled = false;
+    deactivateButton(randomColorButton);
+    sketch();
+  }
+});
 
 const containerSize = 960;
 const gridNumber = Number(inputGridNumber.value);
@@ -134,6 +163,9 @@ function sketch(mode = penMode, pen = penColor) {
   // Add event listeners based on the current mode
   updatedGrids.forEach((grid) => {
     grid.addEventListener(mode, (e) => {
+      if (isRandomColor === true) {
+        pen = getRandomColor();
+      }
       e.target.style.backgroundColor = pen;
     });
   });
