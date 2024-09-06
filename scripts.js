@@ -40,12 +40,14 @@ gridContainer.style.height = containerSize + "px";
 function createGrids(num) {
   const divSize = containerSize / num;
   for (let i = 0; i < num * num; i++) {
-    let div = document.createElement("div");
-    div.classList.add("grids");
-    div.style.width = divSize + "px";
-    div.style.height = divSize + "px";
-    gridContainer.appendChild(div);
+    let grid = document.createElement("div");
+    grid.classList.add("grids");
+    grid.style.width = divSize + "px";
+    grid.style.height = divSize + "px";
+    gridContainer.appendChild(grid);
   }
+  toggleBorder();
+  sketch();
 }
 
 function resetGrids() {
@@ -73,3 +75,12 @@ function toggleBorder(color = gridColor) {
 }
 
 createGrids(gridNumber);
+
+function sketch(mode = "mouseenter", pen = "#006ACC") {
+  const grids = document.querySelectorAll(".grids");
+  grids.forEach((grid) => {
+    grid.addEventListener(mode, (e) => {
+      e.target.style.backgroundColor = pen;
+    });
+  });
+}
