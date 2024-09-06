@@ -139,4 +139,15 @@ function sketch(mode = penMode, pen = penColor) {
   });
 }
 
+function resetSketch() {
+  const grids = document.querySelectorAll(".grids");
+  grids.forEach((grid) => {
+    grid.style.backgroundColor = "#f9f9f9";
+  });
+}
+
+document
+  .querySelector(".resetSketchButton")
+  .addEventListener("click", resetSketch);
+
 createGrids(gridNumber);
