@@ -17,8 +17,21 @@
     </div>
     <div class="content">
       <div id="buttonContainer">
-        <label for="inputGridNumber">Squares per side: </label>
-        <input type="number" name="inputGridNumber" id="inputGridNumber" value="16">
+        <div class="gridNumberControl">
+          <label for="inputGridNumber">Squares per side: </label>
+          <input
+            type="range"
+            name="inputGridNumber"
+            id="inputGridNumber"
+            min="1"
+            max="100"
+            value="16"
+          />
+          <span class="rangeSliderValue">16</span>
+        </div>
+        <div class="borderControl">
+          <button class="gridBorder">Show Border</button>
+        </div>
       </div>
       <div id="gridContainer"></div>
     </div>
