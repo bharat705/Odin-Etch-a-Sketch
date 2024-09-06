@@ -11,7 +11,7 @@ function activateButton(anyButton) {
 function deactivateButton(anyButton) {
   anyButton.setAttribute(
     "style",
-    "background-color: #f0f0f0; color: #333; border: 2px solid #ccc"
+    "background-color: #607d8b; color: #white; border: 2px solid #607d8b"
   );
 }
 

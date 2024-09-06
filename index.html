@@ -17,50 +17,60 @@
     </div>
     <div class="content">
       <div id="buttonContainer">
-        <div class="gridNumberControl">
+        <div class="gridNumberControl control">
           <label for="inputGridNumber">Squares per side: </label>
           <input
             type="range"
             name="inputGridNumber"
             id="inputGridNumber"
+            class="input"
             min="1"
             max="100"
             value="16"
           />
           <span class="rangeSliderValue">16</span>
         </div>
-        <div class="borderControl">
-          <button class="gridBorderButton">Show Border</button>
-          <button class="borderColorButton">Select Border Color</button>
+        <div class="borderControl control">
+          <button class="gridBorderButton button">Show Border</button>
+          <button class="borderColorButton button">Select Border Color</button>
           <input
             type="color"
             name="borderColorInput"
             id="borderColorInput"
+            class="input"
             style="display: none"
           />
         </div>
-        <div class="penColorControl">
-          <button class="penColorButton">Choose Pen Color</button>
+        <div class="penColorControl control">
+          <button class="penColorButton button">Choose Pen Color</button>
           <input
             type="color"
             name="penColorInput"
             id="penColorInput"
+            class="input"
             style="display: none"
           />
         </div>
-        <div class="modeControl">
-          <button class="penModeButton">Click Mode</button>
+        <div class="modeControl control">
+          <button class="penModeButton button">Click Mode</button>
         </div>
-        <div class="resetSketchControl">
-          <button class="resetSketchButton">Reset Sketch</button>
+        <div class="randomColorControl control">
+          <button class="randomColorButton button">Random Color</button>
         </div>
-        <div class="randomColorControl">
-          <button class="randomColorButton">Random Color</button>
+        <div class="progressiveEffectControl control">
+          <button class="progressiveEffectButton button">
+            Progressive Effect
+          </button>
+        </div>
+        <div class="resetSketchControl control">
+          <button class="resetSketchButton button">Reset Sketch</button>
         </div>
       </div>
       <div id="gridContainer"></div>
     </div>
-    <div class="footer"></div>
+    <div class="footer">
+      <h2>Created by Bharat Aryal as part of Odin Project curriculum</h2>
+    </div>
     <script type="module" src="scripts.js"></script>
   </body>
 </html>
