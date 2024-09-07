@@ -39,16 +39,26 @@ body {
 }
 
 .footer {
-  background-color: #00695c;
+  background-color: #222;
   color: #f0f0f0;
-  padding: 10px;
   text-align: center;
-  font-size: 1em;
-  font-family: "Arial", sans-serif;
-  border-top: 5px solid #004d40;
-  position: relative;
-  width: 100%;
-  margin-top: 20px;
+  padding: 20px;
+  font-size: 14px;
+  border-top: 1px solid #444;
+  font-family: "Montserrat", sans-serif;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 60px;
+}
+
+.footer a {
+  color: #4caf50;
+  text-decoration: none;
+}
+
+.footer a:hover {
+  text-decoration: underline;
 }
 
 #buttonContainer {
