@@ -33,14 +33,28 @@ function getRandomColor() {
 
 function convertToRGBA(color, opacity) {
   let rgba;
+
+  // Handle hex color input
   if (color.startsWith("#")) {
     let r = parseInt(color.slice(1, 3), 16);
     let g = parseInt(color.slice(3, 5), 16);
     let b = parseInt(color.slice(5, 7), 16);
-    rgba = `rgb(${r}, ${g}, ${b}, ${opacity})`;
+    rgba = `rgba(${r}, ${g}, ${b}, ${opacity})`;
+
+    // Handle rgb or rgba color input
   } else if (color.startsWith("rgb")) {
-    rgba = color.replace("rgb", "rgba").replace(")", `, ${opacity})`);
+    // If the color is already in rgba format, replace the alpha value
+    if (color.startsWith("rgba")) {
+      rgba = color.replace(
+        /rgba\(([^,]+),([^,]+),([^,]+),[^)]+\)/,
+        `rgba($1,$2,$3,${opacity})`
+      );
+    } else {
+      // If the color is in rgb format, convert it to rgba
+      rgba = color.replace("rgb", "rgba").replace(")", `, ${opacity})`);
+    }
   }
+
   return rgba;
 }
 
@@ -90,16 +104,16 @@ penColorInput.addEventListener("change", (e) => {
   );
 });
 
-let penMode = "mousemove";
+let penMode = "mouseenter";
 const penModeButton = document.querySelector(".penModeButton");
 penModeButton.addEventListener("mousedown", togglePenMode);
 function togglePenMode() {
-  if (penMode === "mousemove") {
+  if (penMode === "mouseenter") {
     penMode = "click";
     activateButton(penModeButton);
     sketch();
   } else if (penMode === "click") {
-    penMode = "mousemove";
+    penMode = "mouseenter";
     defaultButton(penModeButton);
     sketch();
   }
@@ -231,7 +245,6 @@ function toggleBorder(color = borderColor) {
 
 function sketch(mode = penMode, pen = penColor) {
   const grids = document.querySelectorAll(".grids");
-  let opacityValue = 0.1;
   // Remove existing event listeners by replacing grid elements with clones
   grids.forEach((grid) => {
     grid.replaceWith(grid.cloneNode(true)); // This removes all current listeners
@@ -242,6 +255,7 @@ function sketch(mode = penMode, pen = penColor) {
 
   // Add event listeners based on the current mode
   updatedGrids.forEach((grid) => {
+    let opacityValue = 0.1;
     grid.addEventListener(mode, (e) => {
       if (isRandomColor) {
         pen = getRandomColor();
@@ -249,7 +263,7 @@ function sketch(mode = penMode, pen = penColor) {
       } else if (isProgressive) {
         e.target.style.backgroundColor = convertToRGBA(pen, opacityValue);
         if (opacityValue < 1) {
-          opacityValue += 1;
+          opacityValue += 0.1;
         }
       } else {
         e.target.style.backgroundColor = pen;
