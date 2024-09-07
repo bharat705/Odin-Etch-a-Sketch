@@ -8,10 +8,17 @@ function activateButton(anyButton) {
   );
 }
 
-function deactivateButton(anyButton) {
+function defaultButton(anyButton) {
   anyButton.setAttribute(
     "style",
     "background-color: #607d8b; color: #white; border: 2px solid #607d8b"
+  );
+}
+
+function deactivateButton(anyButton) {
+  anyButton.setAttribute(
+    "style",
+    "background-color: #b0b0b0; color: #666666; border: 2px solid #b0b0b0; cursor: not-allowed; opacity: 0.7; "
   );
 }
 
@@ -24,6 +31,19 @@ function getRandomColor() {
   return color;
 }
 
+function convertToRGBA(color, opacity) {
+  let rgba;
+  if (color.startsWith("#")) {
+    let r = parseInt(color.slice(1, 3), 16);
+    let g = parseInt(color.slice(3, 5), 16);
+    let b = parseInt(color.slice(5, 7), 16);
+    rgba = `rgb(${r}, ${g}, ${b}, ${opacity})`;
+  } else if (color.startsWith("rgb")) {
+    rgba = color.replace("rgb", "rgba").replace(")", `, ${opacity})`);
+  }
+  return rgba;
+}
+
 gridBorderButton.addEventListener("mousedown", () => {
   if (isGridOn === false) {
     isGridOn = true;
@@ -31,7 +51,7 @@ gridBorderButton.addEventListener("mousedown", () => {
     toggleBorder();
   } else if (isGridOn === true) {
     isGridOn = false;
-    deactivateButton(gridBorderButton);
+    defaultButton(gridBorderButton);
     toggleBorder();
   }
 });
@@ -70,17 +90,17 @@ penColorInput.addEventListener("change", (e) => {
   );
 });
 
-let penMode = "mouseenter";
+let penMode = "mousemove";
 const penModeButton = document.querySelector(".penModeButton");
 penModeButton.addEventListener("mousedown", togglePenMode);
 function togglePenMode() {
-  if (penMode === "mouseenter") {
+  if (penMode === "mousemove") {
     penMode = "click";
     activateButton(penModeButton);
     sketch();
   } else if (penMode === "click") {
-    penMode = "mouseenter";
-    deactivateButton(penModeButton);
+    penMode = "mousemove";
+    defaultButton(penModeButton);
     sketch();
   }
 }
@@ -102,7 +122,67 @@ randomColorButton.addEventListener("click", () => {
   } else if (isRandomColor === true) {
     isRandomColor = false;
     penColorButton.disabled = false;
+    defaultButton(randomColorButton);
+    defaultButton(penColorButton);
+    sketch();
+  }
+});
+
+let isProgressive = false;
+const progressiveEffectButton = document.querySelector(
+  ".progressiveEffectButton"
+);
+progressiveEffectButton.addEventListener("mousedown", () => {
+  if (isProgressive === false) {
+    isProgressive = true;
+    isRandomColor = false;
+    penColorButton.disabled = false;
+    defaultButton(penColorButton);
+    activateButton(progressiveEffectButton);
+    randomColorButton.disabled = true;
     deactivateButton(randomColorButton);
+    sketch();
+  } else if (isProgressive === true) {
+    isProgressive = false;
+    defaultButton(progressiveEffectButton);
+    defaultButton(randomColorButton);
+    randomColorButton.disabled = false;
+    sketch();
+  }
+});
+
+let isErase = false;
+const eraserButton = document.querySelector(".eraserButton");
+eraserButton.addEventListener("mousedown", () => {
+  if (isErase === false) {
+    isErase = true;
+    isRandomColor = false;
+    isProgressive = false;
+    activateButton(eraserButton);
+
+    randomColorButton.disabled = true;
+    progressiveEffectButton.disabled = true;
+    penColorButton.disabled = true;
+
+    deactivateButton(randomColorButton);
+    deactivateButton(progressiveEffectButton);
+    deactivateButton(penColorButton);
+
+    penColor = "#f9f9f9";
+    sketch();
+  } else if (isErase === true) {
+    isErase = false;
+
+    randomColorButton.disabled = false;
+    progressiveEffectButton.disabled = false;
+    penColorButton.disabled = false;
+
+    defaultButton(eraserButton);
+    defaultButton(randomColorButton);
+    defaultButton(progressiveEffectButton);
+    defaultButton(penColorButton);
+
+    penColor = getRandomColor();
     sketch();
   }
 });
@@ -151,7 +231,7 @@ function toggleBorder(color = borderColor) {
 
 function sketch(mode = penMode, pen = penColor) {
   const grids = document.querySelectorAll(".grids");
-
+  let opacityValue = 0.1;
   // Remove existing event listeners by replacing grid elements with clones
   grids.forEach((grid) => {
     grid.replaceWith(grid.cloneNode(true)); // This removes all current listeners
@@ -163,10 +243,17 @@ function sketch(mode = penMode, pen = penColor) {
   // Add event listeners based on the current mode
   updatedGrids.forEach((grid) => {
     grid.addEventListener(mode, (e) => {
-      if (isRandomColor === true) {
+      if (isRandomColor) {
         pen = getRandomColor();
+        e.target.style.backgroundColor = pen;
+      } else if (isProgressive) {
+        e.target.style.backgroundColor = convertToRGBA(pen, opacityValue);
+        if (opacityValue < 1) {
+          opacityValue += 1;
+        }
+      } else {
+        e.target.style.backgroundColor = pen;
       }
-      e.target.style.backgroundColor = pen;
     });
   });
 }
