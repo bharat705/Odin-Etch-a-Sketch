@@ -46,7 +46,7 @@ This project is a browser-based sketchpad that allows users to draw, erase, and 
 
 1. Clone this repository:
    ```bash
-   git clone https://github.com/yourusername/etch-a-sketch.git
+   git clone https://github.com/bharat705/Odin-Etch-a-Sketch
    ```
 2. Open `index.html` in your preferred browser to start drawing.
 
